@@ -164,30 +164,32 @@
         \draw[-latex] [very thick, color=black] (coupling-box.east) -- ($(coupling-box.east)+(1,0)$) |- node[circle,draw=black,xshift=-0.4cm,yshift=-0.6cm,fill=yellow!30] {$2$} (maximal-box.east);
 
         \begin{axis}[scale=0.6,xshift=-2cm,every axis plot post/.append style={
-            mark=none,domain=-2:3,samples=50,smooth}, % All plots: from -2:2, 50 samples, smooth, no marks
+            mark=none,
+            domain=-3:4,
+            samples=50,
+            smooth}, % All plots: from -3:3, 50 samples, smooth, no marks
             axis x line*=bottom, % no box around the plot, only x and y axis
             axis y line*=left, % the * suppresses the arrow tips
             axis line style={draw=none},
             xtick=\empty, ytick=\empty,
             enlargelimits=false, 
             clip=false, 
-            axis on top,
             grid = major,
             legend style={at={(1,1)},anchor=north,legend cell align=left}
             ]
             % extend the axes a bit to the right and top
             
-            \addplot [name path=particle-density, color=blue,very thick] {\gauss{0}{0.5}};
-            \addplot [name path=core-density, color=black!60!green,very thick] {\gauss{0.5}{0.65}};
+            \addplot [name path=particle-density, color=blue,very thick] {\gauss{0}{0.4}};
+            \addplot [name path=core-density, color=black!60!green,very thick] {\gauss{1.7}{0.65}};
             \legend{$\mathcal{D}\left(\mathcal{Q}_n\right)$,$\mathcal{D}\left(\mathscr{C}\right)$}
-            \path[name path=axis] (axis cs:1,0) -- (axis cs:2,0);
+            \path[name path=axis] (axis cs:-1,0) -- (axis cs:5,0);
             
             % path for fixing boundaries which will be used to fill common region between gaussian curves
             \path[name path=lower,intersection segments={of=particle-density and core-density, sequence={L1 -- R2 -- L3}}];
             
-            \node[rectangle, draw=none, thick, fill=none] at (axis cs: 0.8,0.9) (inside-node) {Density distributions for $\mathcal{Q}_n$ and $\mathscr{C}$};
+            \node[rectangle, draw=none, thick, fill=none] at (axis cs: 1,1.2) (inside-node) {Density distributions for $\mathcal{Q}_n$ and $\mathscr{C}$};
             
-            \addplot[color=gray!30] fill between[of= lower and axis];
+            % \addplot[color=gray!30] fill between[of= lower and axis];
         \end{axis}
 
         \begin{scope}[yshift=6cm,xshift=-4cm]
