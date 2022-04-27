@@ -15,6 +15,7 @@
 %% ------------------ tikz ---------------------------------------
 \usepackage{pgfplots}
 \usepackage{tikz}
+\usepackage{tikz-layers}
 \usetikzlibrary{shapes.geometric, arrows,cd}
 \tikzstyle{startstop} = [rectangle, rounded corners, minimum width=3cm, minimum height=1cm, text centered, draw=black, fill=white]
 \tikzstyle{arrow1}=[ultra thick,->,>=stealth]
@@ -33,10 +34,18 @@
 \usetikzlibrary{shapes.multipart}
 \usetikzlibrary{arrows,calc,fit}
 \usetikzlibrary{matrix,backgrounds,decorations.pathreplacing,positioning}
+\pgfdeclarelayer{background}
+\pgfdeclarelayer{foreground}
+\pgfsetlayers{background,main,foreground}
 \begin{center}
     \begin{figure}
         \centering
         \begin{tikzpicture}[every text node part/.style={align=center}]
+            
+            % draw a background for the density overlap
+            \begin{scope}
+                \node[rectangle, draw=black,fill=yellow!15] (huge-container-box) [minimum height=6cm,minimum width=12.5cm,xshift=1cm] at (2,2.5) {};
+            \end{scope}
             
             % add coupling schematic
             \draw[-latex] [thick, color=black,dashed] (1.5,6) -- (6,6) node [pos=1,above] {$m$-axis};
@@ -47,36 +56,6 @@
             \node[rectangle, draw=black, fill=none,anchor=south west] at (1.5,6) {};
             \node[rectangle, draw=black, fill=none,anchor=south west] at (3.5,7.5) (coupling-box) {$(\mathcal{Q}_p+\mathscr{C})$\\ Coupling};
             
-            % draw a background for the density overlap
-            \begin{scope}[]
-                \node[rectangle, draw=black,fill=yellow!10] (huge-container-box) [minimum height=6cm,minimum width=12.5cm,xshift=1cm] at (2,2.5) {};
-            \end{scope}
-            
-            \begin{axis}[scale=0.6,xshift=-2cm,every axis plot post/.append style={
-                mark=none,domain=-2:3,samples=50,smooth}, % All plots: from -2:2, 50 samples, smooth, no marks
-                axis x line*=bottom, % no box around the plot, only x and y axis
-                axis y line*=left, % the * suppresses the arrow tips
-                axis line style={draw=none},
-                xtick=\empty, ytick=\empty,
-                enlargelimits=false, 
-                clip=false, axis on top,
-                grid = major,
-                legend style={at={(1,1)},anchor=north,legend cell align=left}] % extend the axes a bit to the right and top
-                
-                \addplot [name path=particle-density, color=magenta,very thick] {\gauss{0}{0.5}};
-                \addplot [name path=core-density, color=black!60!green,very thick] {\gauss{0.5}{0.65}};
-                \legend{$\mathcal{D}\left(\mathcal{Q}_p\right)$,$\mathcal{D}\left(\mathscr{C}\right)$}
-                \path[name path=axis] (axis cs:0,0) -- (axis cs:3,0);
-                
-                % path for fixing boundaries which will be used to fill common region between gaussian curves
-                \path[name path=lower,intersection segments={of=particle-density and core-density, sequence={L1 -- R2 -- L3}}];
-                
-                % \addplot[color=gray!30] fill between[of= lower and axis];
-                \node[rectangle, draw=none, thick, fill=none] at (axis cs: 0.8,0.9) (inside-node) {Density distributions for $\mathcal{Q}_p$ and $\mathscr{C}$};
-                \begin{scope}
-                    \addplot[color=gray] fill between[of= lower and axis];
-                \end{scope}
-            \end{axis}
             
             \node[rectangle, draw=black, thick, fill=green!10, inner sep=0.2cm] at (2,-1.8) (first-box) {\textbf{Minimized} short-range interaction \\ \\ $\mathcal{Q}_p+\mathscr{C}$ = \emph{attractive}};
             
@@ -93,6 +72,33 @@
             \draw[-latex] [very thick,black] (second-box) -- (third-box);
             % \draw[-latex] [very thick, color=black] (1.5,5.5) -| (maximal-box.east);
             \draw[-latex] [very thick, color=black] (coupling-box.east) -- ($(coupling-box.east)-(-3,0)$) |- (maximal-box.east);
+
+            \begin{axis}[scale=0.6,xshift=-2cm,every axis plot post/.append style={
+                mark=none,domain=-2:3,samples=50,smooth}, % All plots: from -2:2, 50 samples, smooth, no marks
+                axis x line*=bottom, % no box around the plot, only x and y axis
+                axis y line*=left, % the * suppresses the arrow tips
+                axis line style={draw=none},
+                xtick=\empty, ytick=\empty,
+                enlargelimits=false, 
+                clip=false, axis on top,
+                grid = major,
+                legend style={at={(1,1)},anchor=north,legend cell align=left}
+                ]
+                % extend the axes a bit to the right and top
+                
+                \addplot [name path=particle-density, color=magenta,very thick] {\gauss{0}{0.5}};
+                \addplot [name path=core-density, color=black!60!green,very thick] {\gauss{0.5}{0.65}};
+                \legend{$\mathcal{D}\left(\mathcal{Q}_p\right)$,$\mathcal{D}\left(\mathscr{C}\right)$}
+                \path[name path=axis] (axis cs:1,0) -- (axis cs:2,0);
+                
+                % path for fixing boundaries which will be used to fill common region between gaussian curves
+                \path[name path=lower,intersection segments={of=particle-density and core-density, sequence={L1 -- R2 -- L3}}];
+                
+                % \addplot[color=gray] fill between[of= lower and axis];
+                \addplot[color=gray!30] fill between[of= lower and axis];
+                \node[rectangle, draw=none, thick, fill=none] at (axis cs: 0.8,0.9) (inside-node) {Density distributions for $\mathcal{Q}_p$ and $\mathscr{C}$};
+
+            \end{axis}
         
         \end{tikzpicture}
         
