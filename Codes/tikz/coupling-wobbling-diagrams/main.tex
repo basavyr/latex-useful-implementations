@@ -112,7 +112,7 @@
             \draw[-latex,very thick] (jshell-box.north) -- ($(jshell-box.north)+(0,1cm)$) node[circle,draw=black,yshift=-0.4cm,xshift=7.7cm,fill=yellow!30] {$1$} -| (coupling-box);
 
             % connect maximal overlap with minimal interaction
-            \draw[-latex,very thick] (maximal-box.south) |- ($(first-box.east)+(0.2,0)$) |- node[draw=black,circle,xshift=1cm,fill=yellow!30] {$3$} (first-box.east);
+            \draw[-latex,very thick] (maximal-box.south) -- ($(maximal-box.south)-(0,0.4cm)$) -| node[draw=black,circle,yshift=-0.5cm,xshift=0.6cm,fill=yellow!30] {$3$} ([xshift=1cm]first-box.north);
         
         \end{tikzpicture}
         
