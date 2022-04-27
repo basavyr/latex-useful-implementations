@@ -86,8 +86,8 @@
                 ]
                 % extend the axes a bit to the right and top
                 
-                \addplot [name path=particle-density, color=magenta,very thick] {\gauss{0}{0.5}};
-                \addplot [name path=core-density, color=black!60!green,very thick] {\gauss{0.5}{0.65}};
+                \addplot [name path=particle-density, color=magenta,ultra thick] {\gauss{0}{0.5}};
+                \addplot [name path=core-density, color=black!60!green,ultra thick] {\gauss{0.5}{0.65}};
                 \legend{$\mathcal{D}\left(\mathcal{Q}_p\right)$,$\mathcal{D}\left(\mathscr{C}\right)$}
                 \path[name path=axis] (axis cs:1,0) -- (axis cs:2,0);
                 
@@ -165,7 +165,7 @@
 
         \begin{axis}[scale=0.6,xshift=-2cm,every axis plot post/.append style={
             mark=none,
-            domain=-3:4,
+            domain=0:10,
             samples=50,
             smooth}, % All plots: from -3:3, 50 samples, smooth, no marks
             axis x line*=bottom, % no box around the plot, only x and y axis
@@ -179,17 +179,30 @@
             ]
             % extend the axes a bit to the right and top
             
-            \addplot [name path=particle-density, color=blue,very thick] {\gauss{0}{0.4}};
-            \addplot [name path=core-density, color=black!60!green,very thick] {\gauss{1.7}{0.65}};
+            % \addplot [name path=particle-density, color=blue,very thick] {\gauss{5}{0.4}};
+            % \addplot [name path=core-density, color=black!60!green,very thick] {\gauss{5}{0.65}};
+            
+            \addplot [name path=model,ultra thick, smooth, color=blue] {\gauss{3}{1}};
+            \addplot [name path=obs,ultra thick, smooth, color=black!60!green] {\gauss{6}{1.5}};
             \legend{$\mathcal{D}\left(\mathcal{Q}_n\right)$,$\mathcal{D}\left(\mathscr{C}\right)$}
-            \path[name path=axis] (axis cs:-1,0) -- (axis cs:5,0);
             
-            % path for fixing boundaries which will be used to fill common region between gaussian curves
-            \path[name path=lower,intersection segments={of=particle-density and core-density, sequence={L1 -- R2 -- L3}}];
-            
-            \node[rectangle, draw=none, thick, fill=none] at (axis cs: 1,1.2) (inside-node) {Density distributions for $\mathcal{Q}_n$ and $\mathscr{C}$};
-            
-            % \addplot[color=gray!30] fill between[of= lower and axis];
+            \path[name path=lower,
+            intersection segments={
+            of=model and obs,
+            sequence=A0 -- B1}];
+
+            \path[name path=axis] (axis cs:0,0) -- (axis cs:16,0);
+
+            \addplot[color=gray!30]
+            fill between[
+            of= model and axis]
+            ;
+            \addplot[color=white]
+            fill between[
+            of=model and obs,
+            soft clip={domain=0:10}]
+            ;
+
         \end{axis}
 
         \begin{scope}[yshift=6cm,xshift=-4cm]
