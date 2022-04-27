@@ -108,6 +108,9 @@
                 \node[circle,draw=none,fill=magenta] at (2.5,0.4) {};
                 \node[] at (2.5,-0.5) {$j$-shell};
             \end{scope}
+
+            %draw arrow from jshell to coupling box
+            \draw[-latex,very thick] (jshell-box.north) -- ($(jshell-box.north)+(0,1cm)$) -| (coupling-box);
         
         \end{tikzpicture}
         
