@@ -42,10 +42,9 @@
         \centering
         \begin{tikzpicture}[every text node part/.style={align=center}]
             
+
             % draw a background for the density overlap
-            \begin{scope}
-                \node[rectangle, draw=black,fill=yellow!15] (huge-container-box) [minimum height=6cm,minimum width=12.5cm,xshift=1cm] at (2,2.5) {};
-            \end{scope}
+            \node[rectangle, very thick,dashed,draw=black,fill=none] (huge-container-box) [minimum height=5cm,minimum width=12cm,xshift=0.7cm,yshift=-0.3cm] at (2,2.5) {};
             
             % add coupling schematic
             \draw[-latex] [thick, color=black,dashed] (1.5,6) -- (6,6) node [pos=1,above] {$m$-axis};
@@ -80,7 +79,8 @@
                 axis line style={draw=none},
                 xtick=\empty, ytick=\empty,
                 enlargelimits=false, 
-                clip=false, axis on top,
+                clip=false, 
+                axis on top,
                 grid = major,
                 legend style={at={(1,1)},anchor=north,legend cell align=left}
                 ]
@@ -94,11 +94,17 @@
                 % path for fixing boundaries which will be used to fill common region between gaussian curves
                 \path[name path=lower,intersection segments={of=particle-density and core-density, sequence={L1 -- R2 -- L3}}];
                 
-                % \addplot[color=gray] fill between[of= lower and axis];
-                \addplot[color=gray!30] fill between[of= lower and axis];
                 \node[rectangle, draw=none, thick, fill=none] at (axis cs: 0.8,0.9) (inside-node) {Density distributions for $\mathcal{Q}_p$ and $\mathscr{C}$};
-
+                
+                \addplot[color=gray!30] fill between[of= lower and axis];
             \end{axis}
+
+            \begin{scope}[yshift=6cm,xshift=-4cm]
+                \node[rectangle, very thick,draw=black,fill=yellow] (huge-container-box) [minimum height=3cm,minimum width=2cm] at (2.5,1.5) {};
+                \foreach \x [count=\xi] in {0.1,0.2,0.3,0.4,0.5,0.6} { 
+                    \draw (2,\xi em) -- (3,\xi em) ;
+                }
+            \end{scope}
         
         \end{tikzpicture}
         
